@@ -25,6 +25,13 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 npm install
 ```
 
+### Install additional dependencies
+
+```sh
+npm install axios
+npm install vuex@4
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh

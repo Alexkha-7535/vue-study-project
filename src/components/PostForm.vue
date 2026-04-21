@@ -21,8 +21,31 @@
     </form>
 </template>
 
-<script>
-export default {
+<script setup>
+import { ref } from 'vue'
+
+// Определяем эмиты
+const emit = defineEmits(['create'])
+
+// Реактивное состояние
+const post = ref({
+    title: '',
+    body: ''
+})
+
+// Метод создания поста
+const createPost = () => {
+    post.value.id = Date.now();
+
+    emit('create', {...post.value})
+
+    post.value = {
+        title: '',
+        body: ''        
+    }
+}
+
+/*export default {
     data() {
         return {
             post: {
@@ -41,7 +64,7 @@ export default {
             }
         }
     }
-}
+}*/
 </script>
 
 <style>

@@ -20,15 +20,21 @@
     </div>
 </template>
 
-<script>
-export default {
+<script setup>
+defineProps({
+    post: {
+        type: Object,
+        required: true
+    }
+})
+/*export default {
     props: {
         post: {
             type: Object,
             required: true,
         }
     }
-}
+}*/
 </script>
 
 <style scoped>

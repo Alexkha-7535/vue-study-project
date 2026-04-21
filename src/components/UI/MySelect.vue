@@ -11,8 +11,26 @@
   </select>
 </template>
 
-<script>
-export default {
+<script setup>
+defineOptions({ name: "my-select"})
+defineProps({ 
+  modelValue: { type: String },
+  options: {
+    type: Array,
+    default: () => []
+  }
+})
+
+//эмиты
+const emit = defineEmits(["update:ModelValue"])
+
+//обработчик выбора
+const changeOption = (event) => {
+  console.log(event)
+  emit('update:modelValue', event.target.value)
+}
+
+/*export default {
   name: 'my-select',
   props: {
     modelValue: {
@@ -29,7 +47,7 @@ export default {
             this.$emit('update:modelValue', event.target.value);
         }
     }
-}
+}*/
 </script>
 
 <style scoped>

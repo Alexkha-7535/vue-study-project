@@ -6,10 +6,13 @@
     </button>
 </template>
 
-<script>
-export default {
+<script setup>
+defineOptions({
+    name: "my-button"
+})
+/*export default {
     name: 'my-button'
-}
+}*/
 </script>
 
 <style scoped>

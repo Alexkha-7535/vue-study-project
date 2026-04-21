@@ -2,8 +2,20 @@
     <input :value="modelValue" @input="updateInput" class="input" type="text">
 </template>
 
-<script>
-export default {
+<script setup>
+defineOptions({
+    name: "my-input"
+})
+
+const props = defineProps({ modelValue: [String, Number] })
+
+const emit = defineEmits(['update:modelValue'])
+
+const updateInput = (event) => {
+    emit('update:modelValue', event.target.value)
+}
+
+/*export default {
     name: 'my-input',
     props: {
         modelValue: [String, Number]
@@ -13,7 +25,7 @@ export default {
             this.$emit('update:modelValue', event.target.value)
         }
     }
-}
+}*/
 </script>
 
 <style scoped>

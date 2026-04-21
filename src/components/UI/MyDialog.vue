@@ -7,6 +7,7 @@
 </template>
 
 <script>
+// Переписывать не стал, так как в composition API не используются mixins
 import toggleMixin from "@/mixins/toggleMixin.js"
 export default {
     name: 'my-dialog',

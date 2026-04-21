@@ -15,9 +15,17 @@
     </h2>
 </template>
 
-<script>
+<script setup>
 import PostItem from '@/components/PostItem.vue';
-export default {
+
+defineProps({
+    posts: {
+        type: Array,
+        required: true
+    }
+})
+
+/*export default {
     components: {PostItem},
     props: {
         posts: {
@@ -25,7 +33,7 @@ export default {
             required: true
         }
     }
-}
+}*/
 
 </script>
 

@@ -14,7 +14,7 @@
                 Создать пост
             </my-button>
             <my-select 
-                :model-value="aelectedSort"
+                :model-value="selectedSort"
                 @update:model-value="setSelectedSort"
                 :options="sortOptions"
             />
@@ -30,19 +30,82 @@
             v-if="!isPostsLoading"
         />
         <div v-else>Идёт загрузка...</div>
-        <div ref="observer" class="observer"></div>
+        <div ref="observerTarget" class="observer"></div>
     </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
 import MyButton from "@/components/UI/MyButton.vue";
 import MySelect from '@/components/UI/MySelect.vue';
-import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
-
+/*import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'*/
 import axios from 'axios';
-export default{
+
+const store = useStore()
+
+const observer = ref(null)
+const observerTarget = ref(null)
+
+// Локальное состояние (было в data)
+const dialogVisible = ref(false)
+
+// Вычисляемые свойства из Store (Заменяют mapState и mapGetters)
+const posts = computed(() => store.state.post.posts)
+const isPostsLoading = computed(() => store.state.post.isPostsLoading)
+const selectedSort = computed(() => store.state.post.selectedSort)
+const searchQuery = computed(() => store.state.post.searchQuery)
+const page = computed(() => store.state.post.page)
+const limit = computed(() => store.state.post.limit)
+const totalPages = computed(() => store.state.post.totalPages)
+const sortOptions = computed(() => store.state.post.sortOptions)
+
+// Геттеры
+const sortedAndSearchedPosts = computed(() => store.getters['post/sortedAndSearchedPosts'])
+
+// Методы (Заменяют mapActions и mapMutations)
+const setSearchQuery = (value) => store.commit('post/setSearchQuery', value)
+const setSelectedSort = (value) => store.commit('post/setSelectedSort', value)
+const setPage = (value) => store.commit('post/setPage', value) // если понадобится
+const fetchPosts = () => store.dispatch('post/fetchPosts')
+const loadMorePosts = () => store.dispatch('post/loadMorePosts')
+
+// Локальные методы (были в methods)
+const createPost = (post) =>{
+    store.dispatch('post/createPost', post)
+    dialogVisible = false
+}
+const removePost = (post) =>{
+    store.dispatch('post/removePost', post.id)
+}
+const showDialog = () => {
+    dialogVisible.value = true
+}
+
+// Хуки жизненного цикла (заменяют mounted и beforeUnmount)
+onMounted(() => {
+    fetchPosts()
+    const callback = (entries) => {
+        if (entries[0].isIntersecting && page.value < totalPages.value && !isPostsLoading.value) {
+            loadMorePosts()
+        }
+    }
+    observer.value = new IntersectionObserver(callback, { rootMargin: '0px', threshold: 1.0 })
+    const target = observer.value
+    if (observerTarget.value) {
+        observer.value.observe(observerTarget.value)
+    }
+})
+
+onBeforeUnmount(() => {
+    if (observer.value) {
+        observer.value.disconnect()
+    }
+})
+
+/* export default{
     components: {
         PostList, PostForm, MySelect  
     },
@@ -102,11 +165,9 @@ beforeUnmount() {
             sortedPosts: 'post/sortedPosts',
             sortedAndSearchedPosts: 'post/sortedAndSearchedPosts'
         })
-    },
-    watch: {
-
     }
-}
+
+} */
 </script>
 
 <style>

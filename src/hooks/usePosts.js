@@ -18,7 +18,7 @@ export function usePosts(limit) {
         } catch (e) {
             alert('Ошибка')
         } finally {
-            isPostsLoading.value = false;
+            isPostsLoadings.value = false;
         }        
     }
 

@@ -32,15 +32,119 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted} from "vue";
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
 import MyButton from "@/components/UI/MyButton.vue";
 import MySelect from '@/components/UI/MySelect.vue';
-
-
 import axios from 'axios';
-export default{
+
+//Реактивно состояние (Аналог data)
+const posts = ref([])
+const dialogVisible =  ref(false)
+const isPostsLoading = ref(false)
+const selectedSort = ref('')
+const searchQuery = ref('')
+const page = ref(1)
+const limit = ref(10)
+const totalPages =  ref(0)
+const sortOptions = [
+    {value: 'title', name: 'По названию'},
+    {value: 'body', name: 'По содержимому'},
+]
+
+// Вычисляемые свойства(аналог computed)
+const soretedPosts = computed(() => {
+    return [...posts.value].sort((a, b) =>
+        a[selectedSort.value]?.lockalCompare(b[selectedSort.value])
+    )
+})
+
+const sortedAndSearchedPosts = computed(() => {
+    return sortedPosts.value.filter(post => 
+        post.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+})
+
+// Методы
+const createPost = (post) => {
+    posts.value.push(post)
+    dialogVisible.value = false
+}
+
+const removePost = (post) => {
+    posts.value = posts.value.filter(p => p.id !== post.id)
+}
+
+const showDialog = () => {
+    dialogVisible.value = true
+}
+
+const fetchPosts = async () => {
+    try {
+        isPostsLoading.value = true;
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts?', {
+            params: {
+                _page: page.value,
+                _limit: limit.value
+            }
+        })
+        totalPages.value = Math.ceil(response.headers['x-total-count'] / limit.value)
+        posts.value = response.data;
+    } catch (e) {
+        alert('Ошибка')
+    } finally {
+        isPostsLoading.value = false;
+    }
+}
+
+const loadMorePosts = async () => {
+    try {
+        page.value += 1
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+            params: {
+                _page: page.value,
+                _limit: limit.value
+            }
+        })
+        const totalCount = response.headers['x-total-count'] 
+            ? parseInt(response.headers['x-total-count']) 
+            : 100
+        totalPages.value = Math.ceil(totalCount / limit.value)
+        posts.value = [...posts.value, ...response.data]
+    } catch (e) {
+        console.error('Ошибка загрузки:', e)
+        alert('Ошибка')
+    }
+}
+
+//Observer
+const observerTarget = ref(null)  // ref для DOM-элемента
+
+onMounted(() => {
+    // Загрузка первой страницы
+    fetchPosts()
+    
+    // Настройка наблюдателя
+    const callback = (entries) => {
+        if (entries[0].isIntersecting && page.value < totalPages.value) {
+            loadMorePosts()
+        }
+    }
+    
+    const observer = new IntersectionObserver(callback, {
+        rootMargin: '0px',
+        threshold: 1.0
+    })
+    
+    // Подключаем наблюдатель к элементу
+    if (observerTarget.value) {
+        observer.observe(observerTarget.value)
+    }
+})
+
+/*export default{
     components: {
         PostList, PostForm, MySelect  
     },
@@ -130,7 +234,7 @@ export default{
     watch: {
 
     }
-}
+}*/
 </script>
 
 <style>

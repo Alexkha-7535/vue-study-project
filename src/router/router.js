@@ -4,6 +4,7 @@ import About from "@/pages/About.vue";
 import PostIdPage from "@/pages/PostIdPage.vue";
 import PostPageWithStore from "@/pages/PostPageWithStore.vue";
 import PostPageCompositionApi from "@/pages/PostPageCompositionApi.vue";
+import Favorites from "@/pages/Favorites.vue";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -30,6 +31,10 @@ const routes = [
     {
         path: '/composition',
         component: PostPageCompositionApi
+    },
+    {
+        path: '/favorites',
+        component: Favorites
     }
 ]
 

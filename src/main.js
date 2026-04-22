@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
+//import 'bootstrap/dist/css/bootstrap.min.css'
 import components from '@/components/UI';
 import router from '@/router/router.js';
 import VIntersection from '@/directives/VIntersection.js';
@@ -18,4 +20,5 @@ directives.forEach(directive => {
 app
     .use(router)
     .use(store)
+    .use(createPinia())
     .mount('#app');

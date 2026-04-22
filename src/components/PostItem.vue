@@ -6,6 +6,12 @@
             <div><strong>Описание:</strong> {{ post.body }}</div>
         </div>
         <div class="post__btns">
+            <my-button 
+                @click="toggleFavorite(post)" 
+                
+            >
+                {{ isFavorite ? '❤️' : '🤍' }}
+            </my-button>
             <my-button
                 @click="$router.push(`/posts/${post.id}`)"
             >
@@ -21,6 +27,9 @@
 </template>
 
 <script setup>
+import { useFavoritesStore } from '@/PiniaStore/useFavoritesStore'
+import { mapState, mapGetters, mapActions } from 'pinia'
+
 defineProps({
     post: {
         type: Object,

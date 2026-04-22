@@ -28,7 +28,7 @@
             v-if="!isPostsLoading"
         />
         <div v-else>Идёт загрузка...</div>
-        <div ref="observer" class="observer"></div>
+        <div ref="observerTarget" class="observer"></div>
     </div>
 </template>
 
@@ -38,6 +38,8 @@ import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
 import MyButton from "@/components/UI/MyButton.vue";
 import MySelect from '@/components/UI/MySelect.vue';
+import MyInput from '@/components/UI/MyInput.vue'
+import MyDialog from '@/components/UI/MyDialog.vue'
 import axios from 'axios';
 
 //Реактивно состояние (Аналог data)
@@ -55,9 +57,9 @@ const sortOptions = [
 ]
 
 // Вычисляемые свойства(аналог computed)
-const soretedPosts = computed(() => {
+const sortedPosts = computed(() => {
     return [...posts.value].sort((a, b) =>
-        a[selectedSort.value]?.lockalCompare(b[selectedSort.value])
+        a[selectedSort.value]?.localeCompare(b[selectedSort.value])
     )
 })
 

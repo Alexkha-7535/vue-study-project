@@ -3,13 +3,14 @@ import {onMounted, ref} from 'vue';
 
 export function usePosts(limit) {
     const posts = ref([])
+    const page = ref(1)
     const totalPages = ref(0)
     const isPostsLoadings = ref(true)
     const fetching = async () => {
         try {
             const response = await axios.get('https://jsonplaceholder.typicode.com/posts?', {
                 params: {
-                    _page: 1,
+                    _page: page.value,
                     _limit: limit
                 }
             });
@@ -24,6 +25,6 @@ export function usePosts(limit) {
 
     onMounted(fetching)
     return{
-        posts, isPostsLoadings, totalPages
+        posts, page, isPostsLoadings, totalPages, fetching
     }
 }

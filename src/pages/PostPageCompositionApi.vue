@@ -57,6 +57,7 @@ const {
     loadMore,
     addPost,
     removePostFromStore,
+    fetching,
 } = usePosts(10)
 
 // Если sortOptions нет в хуке — оставляем локально
@@ -94,7 +95,7 @@ onMounted(() => {
     const callback = (entries) => {
         if (entries[0].isIntersecting && 
             page.value < totalPages.value && 
-            !isPostsLoadings.value) {
+            !isPostsLoading.value) {
             loadMore?.()
         }
     }

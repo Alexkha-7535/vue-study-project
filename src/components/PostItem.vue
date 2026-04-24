@@ -27,15 +27,23 @@
 </template>
 
 <script setup>
-import { useFavoritesStore } from '@/PiniaStore/useFavoritesStore'
-import { mapState, mapGetters, mapActions } from 'pinia'
+import { computed } from 'vue'
+import { useFavoritesStore } from '@/PiniaStore/useFavoritesStore.js'
 
-defineProps({
-    post: {
-        type: Object,
-        required: true
-    }
+const props = defineProps({
+    post: { type: Object, required: true }
 })
+
+const favoritesStore = useFavoritesStore()
+
+const toggleFavorite = () => {
+    favoritesStore.toggleFavorite(props.post)
+}
+
+const isPostFavorite = computed(() => {
+    return favoritesStore.favorites.some(p => p.id === props.post.id)
+})
+
 /*export default {
     props: {
         post: {

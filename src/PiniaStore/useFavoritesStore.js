@@ -34,7 +34,7 @@ export const useFavoritesStore = defineStore('favorites', {
     async saveFavorites() {
       try {
         //Сохранение в localStorage
-        lockalStorage.setItem('favorites', JSON.stringify(this.favorites))
+        localStorage.setItem('favorites', JSON.stringify(this.favorites))
       }  
       catch(err) {
         this.error = 'Ошибка сохранения избранного'

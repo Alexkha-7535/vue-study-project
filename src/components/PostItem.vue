@@ -40,7 +40,7 @@ const toggleFavorite = () => {
     favoritesStore.toggleFavorite(props.post)
 }
 
-const isPostFavorite = computed(() => {
+const isFavorite = computed(() => {
     return favoritesStore.favorites.some(p => p.id === props.post.id)
 })
 

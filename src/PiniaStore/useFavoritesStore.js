@@ -18,18 +18,19 @@ export const useFavoritesStore = defineStore('favorites', {
       this.loading = true
       this.error = null
       try {
-        //Например из localStorage
-        const stored = localStorage.getItem('favorites')
-        this.favorites = stored ? JSON.parse(stored) : []
+          const stored = localStorage.getItem('favorites')
+          const parsed = stored ? JSON.parse(stored) : []
+          
+          // ✅ Очищаем и заполняем существующий массив
+          this.favorites.splice(0, this.favorites.length)
+          parsed.forEach(post => this.favorites.push(post))
+      } catch(err) {
+          this.error = 'Ошибка загрузки избранного'
+          console.error(err)  // ✅ Было console.errror
+      } finally {
+          this.loading = false
       }
-      catch(err) {
-        this.error = 'Ошибка загрузки избранного'
-        console.errror(err)
-      } 
-      finally {
-        this.loading = false
-      }
-    },
+  },
     // 2. Сохранение избранного (приватный метод, вызывается после каждого изменения) 
     async saveFavorites() {
       try {

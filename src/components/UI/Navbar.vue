@@ -6,7 +6,7 @@
             <my-button @click="$router.push('/about')">О сайте</my-button>
             <my-button @click="$router.push('/store')">Store</my-button>
             <my-button @click="$router.push('/composition')">Composition</my-button>
-            <my-button class="col-1" @click="$router.push('/favorites')">Favorites</my-button>
+            <my-button @click="$router.push('/favorites')">Favorites</my-button>
         </div>
     </div>
 </template>
@@ -17,7 +17,7 @@
 
 <style scoped>
 .navbar {
-    height: 50px;
+    height: 70px;
     background-color: lightgray;
     box-shadow: 2px 2px 4px gray;
     display: flex;

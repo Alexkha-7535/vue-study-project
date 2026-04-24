@@ -54,7 +54,7 @@ const {
     totalPages, 
     isPostsLoading,
     page,
-    loadMore,
+    loadMorePosts,
     addPost,
     removePostFromStore,
     fetching,
@@ -96,7 +96,7 @@ onMounted(() => {
         if (entries[0].isIntersecting && 
             page.value < totalPages.value && 
             !isPostsLoading.value) {
-            loadMore?.()
+            loadMorePosts?.()
         }
     }
     

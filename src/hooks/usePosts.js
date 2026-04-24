@@ -43,9 +43,9 @@ export function usePosts(limit) {
     }
 }
 const addPost = (post) => posts.value.unshift(post)
-const removePost = (id) => posts.value = posts.value.filter(p => p.id !== id)
+const removePostFromStore = (id) => posts.value = posts.value.filter(p => p.id !== id)
     
     return{
-        posts, page, isPostsLoading, totalPages, fetching, loadMorePosts, addPost, removePost
+        posts, page, isPostsLoading, totalPages, fetching, loadMorePosts, addPost, removePostFromStore
     }
 }

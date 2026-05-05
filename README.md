@@ -30,6 +30,8 @@ npm install
 ```sh
 npm install axios
 npm install vuex@4
+npm install pinia
+npm install bootstrap@latest
 ```
 
 ### Compile and Hot-Reload for Development
